@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  address   String?
+  phone     String?
+  imageUrl  String?
+  image     Bytes?
+  CPFCNPJ   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime
+  Service   Service[]
+  Vehicle   Vehicle[]
+}
+
+model Service {
+  id               Int                @id @default(autoincrement())
+  date             DateTime
+  price            Float              @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime
+  customerId       Int
+  Customer         Customer           @relation(fields: [customerId], references: [id])
+  ServiceByVehicle ServiceByVehicle[]
+}
+
+model ServiceByVehicle {
+  notes     String?
+  price     Float
+  vehicleId Int
+  serviceId Int
+  Service   Service @relation(fields: [serviceId], references: [id])
+  Vehicle   Vehicle @relation(fields: [vehicleId], references: [id])
+
+  @@id([vehicleId, serviceId])
+}
+
+model Vehicle {
+  id               Int                @id @default(autoincrement())
+  model            String
+  make             String?
+  imageUrl         String?
+  licensePlate     String             @unique
+  color            String?
+  fleet            String?
+  notes            String?
+  numberOfAxles    Int
+  customerId       Int
+  ServiceByVehicle ServiceByVehicle[]
+  Customer         Customer           @relation(fields: [customerId], references: [id])
+}
+
+model accounts {
+  id                  String  @id
+  user_id             String
+  type                String
+  provider            String
+  provider_account_id String
+  refresh_token       String?
+  access_token        String?
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?
+  session_state       String?
+  users               users   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([provider, provider_account_id])
+}
+
+model sessions {
+  id            String   @id
+  session_token String   @unique
+  user_id       String
+  expires       DateTime
+  users         users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model users {
+  id             String     @id
+  name           String?
+  username       String?    @unique
+  email          String?    @unique
+  password       String?
+  email_verified DateTime?
+  perfil         Boolean    @default(false)
+  image          String?
+  accessLevel    Int?
+  accounts       accounts[]
+  sessions       sessions[]
+}
+
+model verificationtokens {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
