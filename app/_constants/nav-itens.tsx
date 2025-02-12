@@ -8,7 +8,7 @@ import {
 export const navItems = [
   {
     title: "Home",
-    url: "/",
+    url: "/home",
     icon: <HouseIcon />,
   },
   {

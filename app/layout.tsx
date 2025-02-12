@@ -28,7 +28,7 @@ export default function RootLayout({
         />
       </head>
       <ClerkProvider>
-        <body className={`${roboto.className}antialiased`}>{children}</body>
+        <body className={`${roboto.className} antialiased`}>{children}</body>
       </ClerkProvider>
     </html>
   );

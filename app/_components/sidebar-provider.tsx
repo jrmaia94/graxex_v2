@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 import { AppSidebar } from "./app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
 import { usePathname } from "next/navigation";
@@ -11,17 +10,11 @@ const SidebarProviderComponent = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const path = usePathname();
 
-  useEffect(() => {
-    setIsOpen((visualViewport && visualViewport?.width > 768) || false);
-  }, []);
-
   return (
-    <SidebarProvider open={isOpen} onOpenChange={setIsOpen}>
-      <AppSidebar isOpen={isOpen} />
+    <SidebarProvider>
+      <AppSidebar />
       <main className="flex h-full w-full flex-col px-4 py-6">
         <div className="flex gap-2 pb-6">
           <SidebarTrigger />

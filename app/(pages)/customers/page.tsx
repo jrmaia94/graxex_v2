@@ -1,6 +1,6 @@
 import HandleCustomer from "@/app/_components/handle-customer";
 import { customerColumns } from "@/app/_components/tables/customer-table/columns";
-import { DataTable } from "@/app/_components/tables/customer-table/data-table";
+import { DataTable } from "@/app/_components/tables/data-table";
 import { Button } from "@/app/_components/ui/button";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import { db } from "@/app/_lib/prisma";

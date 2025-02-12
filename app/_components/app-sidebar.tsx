@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   Sidebar,
@@ -7,16 +8,18 @@ import {
   SidebarHeader,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "./ui/sidebar";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { navItems } from "../_constants/nav-itens";
 
-export function AppSidebar({ isOpen }: { isOpen: boolean }) {
+export function AppSidebar() {
+  const { open, isMobile, toggleSidebar } = useSidebar();
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex h-[85px] items-center">
-        {isOpen ? (
+        {open ? (
           <Image
             alt="Logo da empresa"
             src="/logo-horizontal.png"
@@ -36,7 +39,8 @@ export function AppSidebar({ isOpen }: { isOpen: boolean }) {
         <SidebarGroup>
           {navItems.map((item) => (
             <SidebarMenuItem
-              className={`flex ${isOpen && "p-2"} py-2`}
+              onClick={() => isMobile && toggleSidebar()}
+              className={`flex py-2`}
               key={item.title}
             >
               <SidebarMenuButton asChild>
@@ -50,7 +54,7 @@ export function AppSidebar({ isOpen }: { isOpen: boolean }) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="flex items-center pb-5">
-        <UserButton showName={isOpen} />
+        <UserButton showName={open} />
       </SidebarFooter>
     </Sidebar>
   );

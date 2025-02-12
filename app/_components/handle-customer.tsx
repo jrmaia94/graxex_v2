@@ -7,8 +7,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { CustomerFormType } from "@/types/customer-types";
 
-const HandleCustomer = ({ children }: { children: React.ReactNode }) => {
+const HandleCustomer = ({
+  children,
+  customer,
+}: {
+  children: React.ReactNode;
+  customer?: CustomerFormType;
+}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -19,7 +26,7 @@ const HandleCustomer = ({ children }: { children: React.ReactNode }) => {
             Preencha os dados e clique em salvar.
           </DialogDescription>
         </DialogHeader>
-        <CustomerForm />
+        <CustomerForm customer={customer} />
       </DialogContent>
     </Dialog>
   );

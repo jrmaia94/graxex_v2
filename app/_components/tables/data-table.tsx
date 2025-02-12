@@ -20,7 +20,7 @@ import {
   TableRow,
 } from "@/app/_components/ui/table";
 import React from "react";
-import { Input } from "../../ui/input";
+import { Input } from "../ui/input";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,6 +44,7 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: "includesString",
     state: {
       sorting,
       columnFilters,
@@ -51,13 +52,12 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full p-1">
+    <div className="w-full max-w-full">
       <div className="flex items-center pb-2">
         <Input
           placeholder="Buscar..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.setGlobalFilter(event.target.value as string)
           }
           className="w-full"
         />
@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="p-0">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -90,7 +90,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="p-0">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

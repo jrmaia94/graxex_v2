@@ -12,18 +12,19 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { CustomerFormType } from "@/types/customer-types";
 
 const formSchema = z.object({
   id: z.number(),
   name: z.string().min(2).max(50),
-  address: z.string().optional(),
-  phone: z.string().min(11),
-  CPFCNPJ: z.string().min(11),
+  address: z.string().optional().nullable(),
+  phone: z.string().min(11).optional().nullable(),
+  CPFCNPJ: z.string().min(11).optional().nullable(),
 });
-const CustomerForm = () => {
+const CustomerForm = ({ customer }: { customer?: CustomerFormType }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: customer ?? {
       id: 0,
       name: "",
       address: "",
@@ -47,7 +48,7 @@ const CustomerForm = () => {
             <FormItem>
               <FormLabel>Id</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input className="text-sm" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -61,7 +62,7 @@ const CustomerForm = () => {
             <FormItem>
               <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input className="text-sm" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -71,15 +72,22 @@ const CustomerForm = () => {
         <FormField
           control={form.control}
           name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Endereço</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          render={({ field }) => {
+            console.log(field);
+            return (
+              <FormItem>
+                <FormLabel>Endereço</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-sm"
+                    {...field}
+                    value={field.value ? field.value : ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            );
+          }}
         />
         <div className="flex w-full justify-between gap-2">
           {/* PHONE INPUT */}
@@ -90,7 +98,11 @@ const CustomerForm = () => {
               <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    className="text-sm"
+                    {...field}
+                    value={field.value ? field.value : ""}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,7 +116,11 @@ const CustomerForm = () => {
               <FormItem>
                 <FormLabel>CPF/CNPJ</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input
+                    {...field}
+                    value={field.value ? field.value : ""}
+                    className="text-sm"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
