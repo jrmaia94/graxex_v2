@@ -1,19 +1,26 @@
 import { Customer, Vehicle } from "@prisma/client";
 
-export type VehicleWithCustomer = {
+export type VehicleWithCustomerType = {
   Customer: Customer;
 } & Vehicle;
 
+export type VehicleWithNameOfCustomerType = {
+  Customer: Customer;
+  name: string;
+} & Vehicle;
+
 export type VehicleCardType = Pick<
-  VehicleWithCustomer,
-  | "color"
+  VehicleWithCustomerType,
+  | "id"
   | "Customer"
+  | "color"
   | "customerId"
   | "fleet"
-  | "id"
   | "licensePlate"
   | "make"
   | "model"
   | "notes"
   | "numberOfAxles"
 >;
+
+export type VehicleFormType = VehicleCardType;

@@ -4,23 +4,25 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "../../ui/button";
 import { ArrowUpDown } from "lucide-react";
 import VehicleCard from "../../cards/vehicle-card";
-import { VehicleWithCustomer } from "@/types/vehicle-types";
+import { VehicleWithNameOfCustomerType } from "@/types/vehicle-types";
+import HandleVehicle from "../../handle-vehicle";
 
-export const vehicleColumns: ColumnDef<
-  Pick<
-    VehicleWithCustomer,
-    | "id"
-    | "make"
-    | "model"
-    | "licensePlate"
-    | "color"
-    | "customerId"
-    | "Customer"
-    | "fleet"
-    | "notes"
-    | "numberOfAxles"
-  >
->[] = [
+type ColumnDefProps = Pick<
+  VehicleWithNameOfCustomerType,
+  | "id"
+  | "make"
+  | "model"
+  | "licensePlate"
+  | "color"
+  | "customerId"
+  | "Customer"
+  | "fleet"
+  | "notes"
+  | "numberOfAxles"
+  | "name"
+>;
+
+export const vehicleColumns: ColumnDef<ColumnDefProps>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
@@ -50,14 +52,16 @@ export const vehicleColumns: ColumnDef<
     ),
     cell: ({ row }) => {
       return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.licensePlate}
-        </Button>
+        <HandleVehicle vehicle={row.original}>
+          <Button variant="ghost" className="m-0 p-0 font-normal">
+            {row.original.licensePlate}
+          </Button>
+        </HandleVehicle>
       );
     },
   },
   {
-    accessorKey: "other",
+    accessorKey: "model",
     header: () => {
       return (
         <Button className="p-0" variant="ghost">
@@ -69,26 +73,13 @@ export const vehicleColumns: ColumnDef<
   },
 ];
 
-export const vechicleFullColumns: ColumnDef<
-  Pick<
-    VehicleWithCustomer,
-    | "id"
-    | "make"
-    | "model"
-    | "licensePlate"
-    | "color"
-    | "customerId"
-    | "Customer"
-    | "fleet"
-    | "notes"
-    | "numberOfAxles"
-  >
->[] = [
+export const vechicleFullColumns: ColumnDef<ColumnDefProps>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => (
       <div className="flex justify-center">
         <Button
+          className="px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -97,14 +88,14 @@ export const vechicleFullColumns: ColumnDef<
         </Button>
       </div>
     ),
-    cell: ({ row }) => <p className="text-center">{row.original.id}</p>,
+    cell: ({ row }) => <p className="px-2 text-center">{row.original.id}</p>,
   },
   {
     accessorKey: "licensePlate",
     header: ({ column }) => (
       <Button
         variant="ghost"
-        className="p-0"
+        className="px-2"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
         Placa
@@ -113,18 +104,20 @@ export const vechicleFullColumns: ColumnDef<
     ),
     cell: ({ row }) => {
       return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.licensePlate}
-        </Button>
+        <HandleVehicle vehicle={row.original}>
+          <Button variant="ghost" className="m-0 p-0 px-2 font-normal">
+            {row.original.licensePlate}
+          </Button>
+        </HandleVehicle>
       );
     },
   },
   {
-    accessorKey: "Customer",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -134,11 +127,7 @@ export const vechicleFullColumns: ColumnDef<
       );
     },
     cell: ({ row }) => {
-      return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.Customer.name}
-        </Button>
-      );
+      return <p className="m-0 p-0 px-2 font-normal">{row.original.name}</p>;
     },
   },
   {
@@ -146,7 +135,7 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -156,11 +145,7 @@ export const vechicleFullColumns: ColumnDef<
       );
     },
     cell: ({ row }) => {
-      return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.model}
-        </Button>
-      );
+      return <p className="m-0 p-0 px-2 font-normal">{row.original.model}</p>;
     },
   },
   {
@@ -168,7 +153,7 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -178,11 +163,7 @@ export const vechicleFullColumns: ColumnDef<
       );
     },
     cell: ({ row }) => {
-      return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.make}
-        </Button>
-      );
+      return <p className="m-0 p-0 px-2 font-normal">{row.original.make}</p>;
     },
   },
   {
@@ -190,7 +171,7 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -200,11 +181,7 @@ export const vechicleFullColumns: ColumnDef<
       );
     },
     cell: ({ row }) => {
-      return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.color}
-        </Button>
-      );
+      return <p className="m-0 p-0 px-2 font-normal">{row.original.color}</p>;
     },
   },
   {
@@ -212,7 +189,7 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -223,9 +200,9 @@ export const vechicleFullColumns: ColumnDef<
     },
     cell: ({ row }) => {
       return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
+        <p className="m-0 p-0 px-2 text-center font-normal">
           {row.original.fleet}
-        </Button>
+        </p>
       );
     },
   },
@@ -234,20 +211,20 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Número de eixos
+          Nº eixos
           <ArrowUpDown />
         </Button>
       );
     },
     cell: ({ row }) => {
       return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
+        <p className="m-0 p-0 px-2 text-center font-normal">
           {row.original.numberOfAxles}
-        </Button>
+        </p>
       );
     },
   },
@@ -256,7 +233,7 @@ export const vechicleFullColumns: ColumnDef<
     header: ({ column }) => {
       return (
         <Button
-          className="p-0"
+          className="p-0 px-2"
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -266,11 +243,7 @@ export const vechicleFullColumns: ColumnDef<
       );
     },
     cell: ({ row }) => {
-      return (
-        <Button variant="ghost" className="m-0 p-0 font-normal">
-          {row.original.notes}
-        </Button>
-      );
+      return <p className="m-0 p-0 px-2 font-normal">{row.original.notes}</p>;
     },
   },
 ];
