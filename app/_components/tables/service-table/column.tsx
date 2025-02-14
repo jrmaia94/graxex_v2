@@ -27,15 +27,19 @@ export const serviceColumns: ColumnDef<
         </div>
       );
     },
-    cell: ({ row }) => <p className="text-center">{row.original.id}</p>,
+    cell: ({ row }) => (
+      <div>
+        <p className="text-center">{row.original.id}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "name",
-    maxSize: 20,
     header: ({ column }) => {
       return (
-        <div className="flex justify-center">
+        <div className="flex justify-start">
           <Button
+            className="m-0 p-0"
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -77,24 +81,28 @@ export const serviceColumns: ColumnDef<
     accessorKey: "price",
     header: ({ column }) => {
       return (
-        <Button
-          className="p-0"
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Valor
-          <ArrowUpDown />
-        </Button>
+        <div className="flex justify-end pe-4">
+          <Button
+            className="p-0"
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Valor
+            <ArrowUpDown />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <p className="p-0 text-right">
-          {Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(row.original.price)}
-        </p>
+        <div className="flex justify-end pe-4">
+          <p className="p-0 text-right">
+            {Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(row.original.price)}
+          </p>
+        </div>
       );
     },
   },
