@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { getPrivateMetadata } from "../_action/getPrivateMetadata";
+import { getPrivateMetadata } from "../_data-access/getPrivateMetadata";
 import { revalidatePath } from "next/cache";
 
 export async function GET() {

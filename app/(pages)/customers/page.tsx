@@ -3,11 +3,11 @@ import { customerColumns } from "@/app/_components/tables/customer-table/columns
 import { DataTable } from "@/app/_components/tables/data-table";
 import { Button } from "@/app/_components/ui/button";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
-import { db } from "@/app/_lib/prisma";
+import { cachedGetCustomers } from "@/app/_data-access/getCustomers";
 import { PlusIcon } from "lucide-react";
 
 const Customer = async () => {
-  const customers = await db.customer.findMany();
+  const customers = await cachedGetCustomers();
 
   return (
     <div className="flex h-full w-full flex-col">

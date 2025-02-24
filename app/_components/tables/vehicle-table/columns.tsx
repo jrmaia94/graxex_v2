@@ -52,11 +52,13 @@ export const vehicleColumns: ColumnDef<ColumnDefProps>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <HandleVehicle vehicle={row.original}>
+        <>
+          {/* <HandleVehicle vehicle={row.original}>
           <Button variant="ghost" className="m-0 p-0 font-normal">
             {row.original.licensePlate}
           </Button>
-        </HandleVehicle>
+        </HandleVehicle> */}
+        </>
       );
     },
   },
@@ -104,11 +106,13 @@ export const vechicleFullColumns: ColumnDef<ColumnDefProps>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <HandleVehicle vehicle={row.original}>
+        <>
+          {/* <HandleVehicle vehicle={row.original}>
           <Button variant="ghost" className="m-0 p-0 px-2 font-normal">
             {row.original.licensePlate}
           </Button>
-        </HandleVehicle>
+        </HandleVehicle> */}
+        </>
       );
     },
   },

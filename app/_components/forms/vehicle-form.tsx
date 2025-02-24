@@ -27,9 +27,7 @@ import {
   CommandList,
 } from "../ui/command";
 import { cn } from "@/app/_lib/utils";
-import { useEffect, useState } from "react";
-import { getCustomers } from "@/app/_action/getCustomers";
-import { getModelAndMakeOfVehicles } from "@/app/_action/getVehicles";
+import { Customer } from "@prisma/client";
 
 const formSchema = z.object({
   id: z.number(),
@@ -42,10 +40,21 @@ const formSchema = z.object({
   numberOfAxels: z.number(),
   customerId: z.number(),
 });
-const VehicleForm = ({ vehicle }: { vehicle?: VehicleFormType }) => {
-  const [customersList, setCustomersList] = useState<CustomerPopoverType[]>([]);
-  const [makeList, setMakeList] = useState<string[]>([]);
-  const [modelList, setModelList] = useState<string[]>([]);
+const VehicleForm = ({
+  vehicle,
+  customers,
+  makeAndModels,
+}: {
+  vehicle?: VehicleFormType;
+  customers: Customer[];
+  makeAndModels: { models: string[]; makes: string[] };
+}) => {
+  const customersList: CustomerPopoverType[] = customers.map((customer) => ({
+    id: customer.id,
+    name: customer.name,
+  }));
+  const makeList: string[] = makeAndModels.makes;
+  const modelList: string[] = makeAndModels.models;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,23 +74,6 @@ const VehicleForm = ({ vehicle }: { vehicle?: VehicleFormType }) => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
-
-  useEffect(() => {
-    getCustomers().then((customers) => {
-      setCustomersList(
-        customers.map((customer) => ({
-          id: customer.id,
-          name: customer.name,
-        })),
-      );
-    });
-
-    getModelAndMakeOfVehicles().then((data) => {
-      setMakeList(data.makes);
-      setModelList(data.models);
-    });
-  }, []);
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

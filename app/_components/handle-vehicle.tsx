@@ -8,14 +8,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import { cachedGetCustomers } from "../_data-access/getCustomers";
+import { cachedGetModelAndMakeOfVehicles } from "../_data-access/getVehicles";
 
-const HandleVehicle = ({
+const HandleVehicle = async ({
   children,
   vehicle,
 }: {
   children: React.ReactNode;
   vehicle?: VehicleFormType;
 }) => {
+  const customers = await cachedGetCustomers();
+  const makeAndModels = await cachedGetModelAndMakeOfVehicles();
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -26,7 +30,11 @@ const HandleVehicle = ({
             Preencha os dados e clique em salvar.
           </DialogDescription>
         </DialogHeader>
-        <VehicleForm vehicle={vehicle} />
+        <VehicleForm
+          customers={customers}
+          makeAndModels={makeAndModels}
+          vehicle={vehicle}
+        />
       </DialogContent>
     </Dialog>
   );

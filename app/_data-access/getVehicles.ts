@@ -1,4 +1,5 @@
 "use server";
+import { unstable_cache } from "next/cache";
 import { db } from "../_lib/prisma";
 
 export const getModelAndMakeOfVehicles = async () => {
@@ -24,3 +25,9 @@ export const getModelAndMakeOfVehicles = async () => {
 
   return { models, makes };
 };
+
+export const cachedGetModelAndMakeOfVehicles = unstable_cache(
+  getModelAndMakeOfVehicles,
+  ["get-model-and-make-of-vehicles"],
+  { revalidate: 20 },
+);
