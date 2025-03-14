@@ -14,9 +14,9 @@ model Customer {
   phone     String?
   imageUrl  String?
   CPFCNPJ   String?
-  ciclo     Int?
+  period    Int?
   createdAt DateTime  @default(now())
-  updatedAt DateTime
+  updatedAt DateTime  @updatedAt
   Service   Service[]
   Vehicle   Vehicle[]
 }
@@ -58,7 +58,9 @@ model Vehicle {
   customerId       Int
   driverName       String?
   driverPhone      String?
-  ciclo            Int?
+  period           Int?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
   ServiceByVehicle ServiceByVehicle[]
   Customer         Customer           @relation(fields: [customerId], references: [id])
 }
