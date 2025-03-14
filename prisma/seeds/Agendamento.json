@@ -8,8 +8,8 @@
     "clienteId": 36,
     "price": 170,
     "pricePerVeiculo": [
-      { "price": 85, "veiculoId": 155 },
-      { "price": 85, "veiculoId": 156 }
+      { "price": 85, "veiculoId": 155, "observacao": "" },
+      { "price": 85, "veiculoId": 156, "observacao": "" }
     ],
     "paid": false,
     "paymentMethod": null
