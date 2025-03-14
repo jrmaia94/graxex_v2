@@ -13,8 +13,8 @@ model Customer {
   address   String?
   phone     String?
   imageUrl  String?
-  image     Bytes?
   CPFCNPJ   String?
+  ciclo     Int?
   createdAt DateTime  @default(now())
   updatedAt DateTime
   Service   Service[]
@@ -23,10 +23,12 @@ model Customer {
 
 model Service {
   id               Int                @id @default(autoincrement())
-  date             DateTime
+  date             DateTime           @default(now())
   price            Float              @default(0)
+  isPaid           Boolean            @default(false)
+  paymentMethod    PaymentMethod?
   createdAt        DateTime           @default(now())
-  updatedAt        DateTime
+  updatedAt        DateTime           @updatedAt
   customerId       Int
   Customer         Customer           @relation(fields: [customerId], references: [id])
   ServiceByVehicle ServiceByVehicle[]
@@ -54,6 +56,9 @@ model Vehicle {
   notes            String?
   numberOfAxles    Int
   customerId       Int
+  driverName       String?
+  driverPhone      String?
+  ciclo            Int?
   ServiceByVehicle ServiceByVehicle[]
   Customer         Customer           @relation(fields: [customerId], references: [id])
 }
@@ -104,4 +109,11 @@ model verificationtokens {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum PaymentMethod {
+  PIX
+  CARTAO
+  DINHEIRO
+  BOLETO
 }

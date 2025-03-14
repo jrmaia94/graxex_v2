@@ -28,6 +28,9 @@ import {
 } from "../ui/command";
 import { cn } from "@/app/_lib/utils";
 import { Customer } from "@prisma/client";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
+import Loader from "../loader";
 
 const formSchema = z.object({
   id: z.number(),
@@ -40,15 +43,53 @@ const formSchema = z.object({
   numberOfAxels: z.number(),
   customerId: z.number(),
 });
-const VehicleForm = ({
-  vehicle,
-  customers,
-  makeAndModels,
-}: {
-  vehicle?: VehicleFormType;
-  customers: Customer[];
-  makeAndModels: { models: string[]; makes: string[] };
-}) => {
+const VehicleForm = ({ vehicle }: { vehicle?: VehicleFormType }) => {
+  const [isPending, startTransition] = useTransition();
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [makeAndModels, setMakeAndModels] = useState<{
+    makes: string[];
+    models: string[];
+  }>({
+    makes: [],
+    models: [],
+  });
+
+  useEffect(() => {
+    startTransition(() => {
+      fetch("/api/customers")
+        .then((res) => {
+          if (res.status >= 200 && res.status < 300) {
+            res.json().then((result) => {
+              setCustomers(result);
+            });
+          } else {
+            toast("Erro na solicitação de dados!", {
+              description: "Erro ao obter os dados do(s) cliente(s)!",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          toast("Erro na solicitação de dados!", {
+            description: "Erro ao obter os dados do(s) cliente(s)!",
+          });
+        });
+
+      fetch("/api/vehicles/makes_and_models")
+        .then((res) => {
+          res.json().then((result) => {
+            setMakeAndModels(result);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          toast("Erro na solicitação de dados!", {
+            description: "Erro ao obter os dados do(s) cliente(s)!",
+          });
+        });
+    });
+  }, []);
+
   const customersList: CustomerPopoverType[] = customers.map((customer) => ({
     id: customer.id,
     name: customer.name,
@@ -76,6 +117,7 @@ const VehicleForm = ({
   }
   return (
     <Form {...form}>
+      {isPending && <Loader />}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         {/* ID INPUT */}
         <FormField

@@ -1,3 +1,4 @@
+"use client";
 import { VehicleFormType } from "@/types/vehicle-types";
 import VehicleForm from "./forms/vehicle-form";
 import {
@@ -8,18 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { cachedGetCustomers } from "../_data-access/getCustomers";
-import { cachedGetModelAndMakeOfVehicles } from "../_data-access/getVehicles";
 
-const HandleVehicle = async ({
+const HandleVehicle = ({
   children,
   vehicle,
 }: {
   children: React.ReactNode;
   vehicle?: VehicleFormType;
 }) => {
-  const customers = await cachedGetCustomers();
-  const makeAndModels = await cachedGetModelAndMakeOfVehicles();
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -30,11 +27,7 @@ const HandleVehicle = async ({
             Preencha os dados e clique em salvar.
           </DialogDescription>
         </DialogHeader>
-        <VehicleForm
-          customers={customers}
-          makeAndModels={makeAndModels}
-          vehicle={vehicle}
-        />
+        <VehicleForm vehicle={vehicle} />
       </DialogContent>
     </Dialog>
   );
