@@ -22,7 +22,7 @@ export function AppSidebar() {
   const { open, isMobile, toggleSidebar } = useSidebar();
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="flex h-[85px] items-center justify-center">
+      <SidebarHeader className="z-10 flex h-[85px] items-center justify-center">
         {open ? (
           <Image
             alt="Logo da empresa"
@@ -39,7 +39,7 @@ export function AppSidebar() {
           />
         )}
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="z-10">
         <SidebarGroup
           className={cn("flex flex-col gap-4", open && "mt-5 px-7")}
         >
@@ -49,14 +49,24 @@ export function AppSidebar() {
               className={`flex`}
               key={item.title}
             >
+              {open && (
+                <div
+                  className={cn(
+                    "h-full w-[10px] rounded-s-lg",
+                    path === item.url && "bg-primary",
+                  )}
+                ></div>
+              )}
               <SidebarMenuButton
-                className={cn("rounded-full", open && "px-8 py-6")}
+                className={cn(
+                  open ? "rounded-e-full px-8 py-6" : "rounded-full",
+                )}
                 asChild
               >
                 <Button
                   asChild
-                  variant={path === item.url ? "default" : "ghost"}
-                  className="justify-start transition hover:bg-muted-foreground hover:text-primary-foreground"
+                  variant={path === item.url && !open ? "default" : "ghost"}
+                  className="justify-start transition hover:bg-primary hover:text-primary-foreground"
                 >
                   <Link
                     className="flex gap-4 text-xl font-normal"
@@ -71,7 +81,7 @@ export function AppSidebar() {
           ))}
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="flex items-center pb-10">
+      <SidebarFooter className="z-10 flex items-center pb-10">
         <UserButton showName={open} />
       </SidebarFooter>
     </Sidebar>

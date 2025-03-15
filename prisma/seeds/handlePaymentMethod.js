@@ -1,6 +1,6 @@
 import { PaymentMethod } from "@prisma/client";
 
-export const handlePaymentMethod = (value?: string) => {
+export const handlePaymentMethod = (value) => {
   if (!value) return undefined;
 
   if (value.toUpperCase() === "PIX") return PaymentMethod.PIX;
